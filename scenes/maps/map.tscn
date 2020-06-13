@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/characters/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/enemies/bullet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/map.gd" type="Script" id=3]
+
+[sub_resource type="Environment" id=1]
+background_mode = 4
+glow_enabled = true
+glow_bloom = 0.03
+glow_blend_mode = 0
+glow_bicubic_upscale = true
+
+[sub_resource type="Curve2D" id=2]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 40.7249, -16.7739, 0, 0, 0, 0, 154.996, -18.1343, 0, 0, 0, 0, 340.007, -9.97203, 0, 0, 0, 0, 492.369, -12.6928, 0, 0, 0, 0, 639.289, -12.6928, 0, 0, 0, 0, 726.353, -4.53054, 0, 0, 0, 0, 840.624, -12.6928, 0, 0, 0, 0, 930.409, -4.53054, 0, 0, 0, 0, 1020.19, -4.53054, 0, 0, 0, 0, 1022.91, 81.173, 0, 0, 0, 0, 1021.55, 209.048, 0, 0, 0, 0, 1035.16, 258.021, 0, 0, 0, 0, 1037.88, 315.157, 0, 0, 0, 0, 1033.8, 421.266, 0, 0, 0, 0, 1035.16, 509.69, 0, 0, 0, 0, 1031.08, 580.43, 0, 0, 0, 0, 1032.44, 608.998, 0, 0, 0, 0, 979.382, 614.439, 0, 0, 0, 0, 869.192, 619.881, 0, 0, 0, 0, 782.128, 625.322, 0, 0, 0, 0, 727.713, 630.764, 0, 0, 0, 0, 693.704, 626.682, 0, 0, 0, 0, 610.721, 625.322, 0, 0, 0, 0, 462.44, 633.484, 0, 0, 0, 0, 376.737, 629.403, 0, 0, 0, 0, 289.673, 619.881, 0, 0, 0, 0, 174.041, 618.52, 0, 0, 0, 0, 107.383, 617.16, 0, 0, 0, 0, 43.4457, 619.881, 0, 0, 0, 0, 2.63449, 615.799, 0, 0, 0, 0, -16.4107, 589.952, 0, 0, 0, 0, -13.69, 516.492, 0, 0, 0, 0, -8.2485, 434.87, 0, 0, 0, 0, -16.4107, 320.599, 0, 0, 0, 0, -17.7711, 230.814, 0, 0, 0, 0, -23.2126, 117.903, 0, 0, 0, 0, -43.6182, 58.0466, 0, 0, 0, 0, -27.2937, 11.7939, 0, 0, 0, 0, 14.8778, -15.4135, 0, 0, 0, 0, 40.7249, -16.7739 )
+}
+
+[node name="map" type="Node2D"]
+script = ExtResource( 3 )
+Bullet = ExtResource( 2 )
+
+[node name="player" parent="." instance=ExtResource( 1 )]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 1 )
+
+[node name="spawnTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="startTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="startPosition" type="Position2D" parent="."]
+position = Vector2( 240, 450 )
+__meta__ = {
+"_gizmo_extents_": 2.0
+}
+
+[node name="bulletSpawnPath" type="Path2D" parent="."]
+curve = SubResource( 2 )
+
+[node name="bulletSpawnLocation" type="PathFollow2D" parent="bulletSpawnPath"]
+position = Vector2( 40.7249, -16.7739 )
+rotation = -0.0119042
+[connection signal="timeout" from="spawnTimer" to="." method="_on_spawnTimer_timeout"]
+[connection signal="timeout" from="startTimer" to="." method="_on_startTimer_timeout"]
